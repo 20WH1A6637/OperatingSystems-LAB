@@ -1,53 +1,48 @@
-#include<stdio.h>
- 
+#include <stdio.h>
 int main(){
-int b[20],w[20],t[20];
-    int aw, at, i, n, temp, sw = 0, st = 0;
-    printf("enter no .of processors : ");
-    scanf("%d", &n);
-
-    printf("enter burst time of processors : ");
-    for(i = 0; i < n; i++){
-        scanf("%d", &b[i]);  
+    int i,j,n,pos,res=0,k;
+    float avg_wt,avg_tat;
+    printf("enter number of processes:");
+    scanf("%d",&n);
+    int wt[n],bt[n],p[n],temp,tr[n];
+    for(i = 0;i<n;i++){
+        printf("enter burst time");
+        scanf("%d",&bt[i]);
+        p[i]= i+1;
     }
-   
-    for(i = 0; i <= n; i++){
-        if(b[i] > b[i+1]){
-            temp = b[i];
-            b[i] = b[i+1];
-            b[i+1] = temp;
+    for(i = 0;i<n;i++){
+        pos = i;
+        for(j = i+1;j<n;j++){
+            if(bt[j]<bt[pos]){
+                pos = j;
+             }
         }
+        temp = bt[i];
+        bt[i] = bt[pos];
+        bt[pos] = temp;
+        temp = p[i];
+        p[i]= p[pos];
+        p[pos]=temp;
     }
-    w[0] = 0;
+    wt[0] = 0;
     for(i = 1; i < n; i++){
-        w[i] = w[i-1] + b[i-1];
-        sw = sw + w[i];
+        wt[i] = 0;
+        for(j = 0; j < i; j++){
+            wt[i] += bt[j];
+        }
+        res += wt[i];
     }
-    t[0]=b[0];
-    for(i=1;i<n;i++){
-        t[i]=b[i]+t[i-1];
-        st = st+t[i];
+
+    avg_wt =(float)res/n;
+    res = 0;
+    printf("\nprocess\tbuffertime\twaitingtime\tturnaroundtime\n");
+    for(k = 0; k < n; k++){
+        tr[k] = wt[k] + bt[k];
+        res += tr[k];
+        printf("%d\t\t%d\t\t%d\t\t%d\n",p[k],bt[k],wt[k],tr[k]);
     }
-    st = st + t[0];
-    aw = sw / n;
-    at = st / n;
-    printf("turnaround time\n");
-    for(i=0;i<n;i++){
-        printf("%d ",t[i]);
-    }
-    printf("\n");
-    printf("burst time\n");
-    for(i = 0; i < n; i++){
-         printf("%d ", b[i]);
-     }
-    printf("\n");
-    printf("waiting time\n");
-    for(i = 0;i < n; i++){
-        printf("%d ",w[i]);
-    }
-    printf("\n");
-    printf("average waiting time : %d \n", aw);
-    printf("average turnaround time : %d \n", at);
-     
-    return 0;
-  }
+
+    avg_tat =(float)res/n;
+    printf("Average waiting time is:%f\n",avg_wt);
+    printf("Average turn around time is:%f\n",avg_tat);
+}
