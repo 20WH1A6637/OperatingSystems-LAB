@@ -1,33 +1,28 @@
 #include<stdio.h>
-int main() {
-    int n,temp,avgw = 0,avgt = 0;
-    int p[20];
-    int w[20];
-    int t[20];
-   
-   
-    printf("\nenter the num of processes\n");
-    scanf("%d",&n);
-    printf("\nenter the burst time for each process\n");
-    for(int i = 0;i < n;i++) {
-        scanf("%d",&p[i]);
-    }
-   
-    w[0] = 0;
-    for(int i = 1;i <= n;i++){
-       w[i] = w[i-1] + p[i -1];
-       t[i-1] = w[i-1] + p[i-1];      
-   }
 
-   
-    printf("\nprocess burst_time    waiting_time      turnaround_time\n");
-    for(int i = 0;i<n;i++){
-        printf(" p[%d]        %d             %d              %d \n" ,i,p[i],w[i],t[i]);
-        avgw = avgw + w[i];
-        avgt = avgt + t[i];
+int main(){
+    int bt[20], wt[20], tat[20];
+    int i, n;
+    float wtavg, tatavg;
+    printf("Enter the no of processes: ");
+    scanf("%d", &n);
+    printf("Enter burst times:");
+    for(i = 0; i < n; i++){
+        scanf("%d", &bt[i]);
     }
-   
-    printf("\navg waiting time =  %d",avgw/n);
-     printf("\navg turnaround time =  %d\n",avgt/n);
-    return 0;
+    wt[0] = wtavg = 0;
+    tat[0] = tatavg = bt[0];
+    for(i = 1; i < n; i++){
+        wt[i] = wt[i - 1] + bt[i - 1];
+        tat[i] = wt[i] + bt[i];
+        wtavg += wt[i];
+        tatavg += tat[i];
+    }
+    printf("\process \tburst time \twaiting time \t turnaround time\n");
+    for(i = 0; i < n; i++){
+        printf("\n p%d \t\t %d \t\t %d \t\t %d\n", i, bt[i], wt[i], tat[i]);
+
+    }
+    printf("avg wt: %f \n", wtavg/n);
+    printf("avg tat: %f ", tatavg/n);
 }
