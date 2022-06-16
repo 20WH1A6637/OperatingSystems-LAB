@@ -41,37 +41,38 @@ int main(){
 		}
 	}
 	
-	while(flag && c1 < n){
-		flag = 0;
+	while(flag){
+	    flag = 0;
 		for(i = 0; i < n; i++){
 			int c = 0;
 			for(j = 0; j < r; j++){
 				if(status[i] == 0 && avail[j] >= need[i][j]){
 					c++;
-					if(c == r){
-						for(int k = 0; k < r; k++){
-							avail[k] = avail[k] + alloc[i][k];
-						}
-						status[i] = 1;
-						printf("P[%d]", i);
-						
-					}
 				}
 			}
-		}
-
-		c1 = 0;
-		for(i = 0; i < n; i++){
-			if(status[i] == 1){
-				c1++;
+			if(c == r){
+				for(int k = 0; k < r; k++){
+					avail[k] = avail[k] + alloc[i][k];
+				}
+				status[i] = 1;
+				printf("P[%d]", i + 1);
+				flag = 1;
 			}
-		} 
-        if(c1 == n){
-			printf("SAFE STATE");
-			flag = 0;
 		}
-		else{
-			printf("DEAD LOCK");
-		} 
 	}
+
+	int c1 = 0;
+	for(i = 0; i < n; i++){
+		if(status[i] == 1){
+			c1 += status[i];
+		}
+	} 
+    if(c1 == n){
+		printf("SAFE STATE");
+		flag = 0;
+	}
+	else{
+		printf("DEAD LOCK");
+	} 
+	
 }
