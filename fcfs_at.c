@@ -22,7 +22,7 @@ int main(){
 		scanf("%d %d", &bt[i], &at[i]);
 	}
 
-	/*for(i = 0; i < n; i++){
+	for(i = 0; i < n; i++){
 		for(j = 0; j < n; j++){
 			if(at[i] < at[j]){
 				swap(&at[i], &at[j]);
@@ -31,7 +31,7 @@ int main(){
 			}
 		}
 	}
-*/
+	
 	for(i = 0; i < n; i++){
 		st[i] = bt[i];
 	}
