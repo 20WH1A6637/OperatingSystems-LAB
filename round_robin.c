@@ -1,58 +1,46 @@
 #include<stdio.h>
-#include<stdbool.h>
-int main() {
-    int n;
-    printf("Enter the number of processes: ");
-    scanf("%d", &n);
-    int bt[n];
-    int wt[n];
-    int tt[n];
-    int tq;
-    float awt = 0, att = 0;
-    printf("Enter the burst times: ");
-    for(int i = 0; i < n; i++) {
+int main(){
+    int i, j, n, bt[10], wt[10], tat[10], t, ct[10], max;
+    float awt = 0, att = 0, temp=0;
+    printf("Enter the no of processes\n");
+    scanf("%d",&n);
+    
+    for(i = 0; i < n; i++){
+        printf("\nEnter Burst Time for process %d\n ", i+1);
         scanf("%d", &bt[i]);
+        ct[i] = bt[i];
     }
-    printf("Enter the time quantum: ");
-    scanf("%d", &tq);
-    int copy_bt[n];
-    for(int i = 0; i < n; i++) {
-        copy_bt[i] = bt[i];
+    
+    printf("\nEnter the size of time slice\n");
+    scanf("%d",&t);
+    
+    max = bt[0];
+    for(i = 1; i < n; i++){ 
+        if(max < bt[i]){
+            max = bt[i];
+        }
     }
-    int t = 0;
-    while(1) {
-        bool done = true;
-        for(int i = 0; i < n; i++) {
-            if(copy_bt[i] > 0) {
-                done = false;
-                if(copy_bt[i] > tq) {
-                    t += tq;
-                    copy_bt[i] -= tq;
-                } else {
-                    t += copy_bt[i];
-                    wt[i] = t - bt[i];
-                    copy_bt[i] = 0;
+    
+    for(j = 0; j < (max/t)+1; j++)
+        for(i = 0; i < n; i++)
+            if(bt[i] != 0)
+                if(bt[i] <= t){
+                    tat[i] = temp + bt[i];
+                    temp = temp + bt[i];
+                    bt[i] = 0;
                 }
-            }
-        }
-        if(done == true) {
-            break;
-        }
-    }
-
-    for(int j = 0; j < n; j++) {
-        tt[j] = wt[j] + bt[j];
-    }
-    for(int i = 0; i < n; i++) {
+                else{
+                    bt[i] = bt[i] - t;
+                    temp = temp + t;
+                }
+    for(i = 0; i < n; i++){
+        wt[i] = tat[i] - ct[i];
+        att += tat[i];
         awt += wt[i];
     }
-    for(int i = 0; i < n; i++) {
-        att += tt[i];
-    }
-    printf("process\t  waiting time\t   burst time\t  turnaround time\n");
-    for(int i = 0; i < n; i++) {
-        printf("P[%d]\t\t%dms\t\t%dms\t\t%dms\n", i + 1, wt[i], bt[i], tt[i]);
-    }
-    printf("Average waiting time: %0.2fms\n", awt/n);
-    printf("Average turnaround time: %0.2fms\n", att/n);
+    printf("\nThe Average Turnaround time is%f",att/n);
+    printf("\nThe Average Waiting time is %f ",awt/n);
+    printf("\n\tPROCESS\t BURST TIME \t WAITING TIME\tTURNAROUNDTIME\n");
+    for(i = 0; i < n; i++)
+        printf("\t%d \t %d \t\t %d \t\t %d \n",i+1,ct[i],wt[i],tat[i]);
 }
