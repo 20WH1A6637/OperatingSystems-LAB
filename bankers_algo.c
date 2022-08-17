@@ -69,7 +69,6 @@ int main(){
 	} 
     if(c1 == n){
 		printf("SAFE STATE");
-		flag = 0;
 	}
 	else{
 		printf("DEAD LOCK");
